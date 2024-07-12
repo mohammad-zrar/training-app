@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { useFormState } from "react-dom";
-import { signup } from "@/actions/auth-actions";
+import { auth } from "@/actions/auth-actions";
 
 export default function AuthForm({ mode }) {
-  // 'login', 'signup'
-  const [formState, formAction] = useFormState(signup, {});
+  const [formState, formAction] = useFormState(auth.bind(null, mode), {});
 
   return (
     <form id="auth-form" action={formAction}>
@@ -15,7 +14,7 @@ export default function AuthForm({ mode }) {
       </div>
       <p>
         <label htmlFor="email">Email</label>
-        <input type="email" name="email" id="email" />
+        <input type="text" name="email" id="email" />
       </p>
       <p>
         <label htmlFor="password">Password</label>
