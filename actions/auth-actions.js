@@ -31,13 +31,10 @@ export async function signup(prevState, formData) {
     await createAuthSession(id);
     redirect("/training");
   } catch (error) {
-    if (error.code === "SQLITE_CONTRAINT_UNIQUE") {
-      return {
-        errors: {
-          email:
-            "It seems like an account for the chosen email already exists.",
-        },
-      };
+    if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
+      errors.email =
+        "It seems like an account for the chosen email already exists.";
+      return { errors };
     }
     throw error;
   }
@@ -47,22 +44,20 @@ export async function login(prevState, formData) {
   const email = formData.get("email");
   const password = formData.get("password");
 
+  let errors = {};
+
   const existingUser = getUserByEmail(email);
   if (!existingUser) {
-    return {
-      errors: {
-        email: "Could not authenticate user, please check your credentials.",
-      },
-    };
+    errors.email =
+      "Could not authenticate user, please check your credentials.";
+    return { errors };
   }
   const isValidPassword = verifyPassword(existingUser.password, password);
 
   if (!isValidPassword) {
-    return {
-      errors: {
-        password: "Could not authenticate user, please check your credentials.",
-      },
-    };
+    errors.password =
+      "Could not authenticate user, please check your credentials.";
+    return { errors };
   }
 
   await createAuthSession(existingUser.id);
