@@ -1,3 +1,4 @@
+import { logout } from "@/actions/auth-actions";
 import "../globals.css";
 
 export default function AuthRootLayout({ children }) {
@@ -6,7 +7,7 @@ export default function AuthRootLayout({ children }) {
       <body>
         <header id="auth-header">
           <p>Welcome back!</p>
-          <form>
+          <form action={logout}>
             <button>Logout</button>
           </form>
         </header>
